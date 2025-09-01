@@ -22,7 +22,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="h-full flex flex-col">
       {/* Header */}
       <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
         <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
@@ -36,7 +36,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
             <img 
               src="/images/warrior.png" 
               alt="Warriors"
-              className="w-3 h-3 object-contain"
+              className="w-4 h-4 object-contain"
             />
             {player.troops.warrior}
           </div>
@@ -44,7 +44,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
             <img 
               src="/images/archer.jpeg" 
               alt="Archers"
-              className="w-3 h-3 object-contain"
+              className="w-4 h-4 object-contain"
             />
             {player.troops.archer}
           </div>
@@ -52,7 +52,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
             <img 
               src="/images/monk.png" 
               alt="Monks"
-              className="w-3 h-3 object-contain"
+              className="w-4 h-4 object-contain"
             />
             {player.troops.monk}
           </div>
@@ -60,7 +60,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
             <img 
               src="/images/CF156F0F-159A-4ED8-998B-3038B0DCE742_1_201_a.jpeg" 
               alt="Bombers"
-              className="w-3 h-3 object-contain"
+              className="w-4 h-4 object-contain"
             />
             {player.troops.bomber}
           </div>
@@ -104,7 +104,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex bg-black/30">
+      <div className="flex bg-black/30 flex-shrink-0">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="p-4">
+      <div className="flex-1 overflow-y-auto p-4">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
