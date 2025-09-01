@@ -22,7 +22,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full grid grid-rows-[auto_auto_auto_1fr]">
+    <div className="h-full flex flex-col">
       {/* Header */}
       <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
         <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="overflow-y-auto p-4 min-h-0">
+      <div className="flex-1 overflow-y-scroll p-4">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
@@ -620,14 +620,6 @@ function QuestsTab() {
   return (
     <div className="space-y-4">
       <h3 className="text-white font-bold text-lg">Quests & Games</h3>
-      
-      {/* DEBUG: Test scrolling with extra content */}
-      <div className="bg-red-900/20 p-2 rounded border border-red-500/30">
-        <div className="text-red-300 text-xs">DEBUG: Scroll Test</div>
-        {Array.from({ length: 20 }, (_, i) => (
-          <div key={i} className="text-gray-400 text-xs py-1">Test line {i + 1}</div>
-        ))}
-      </div>
       
       {/* Gambling Mini-Game */}
       <div className="bg-orange-900/30 p-3 rounded-lg border border-orange-700/30">
