@@ -22,9 +22,9 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div className="h-full overflow-y-auto overflow-x-hidden">
       {/* Header */}
-      <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
+      <div className="bg-green-800/50 p-3 border-b border-green-700/50 sticky top-0 z-10">
         <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
         <div className="flex items-center gap-3 mt-1 text-sm">
           <div className="text-green-300">🎋 {player.bamboo.toLocaleString()}</div>
@@ -104,7 +104,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex bg-black/30 flex-shrink-0">
+      <div className="flex bg-black/30 sticky top-[104px] z-10">
         {tabs.map(tab => (
           <button
             key={tab.id}
@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="p-4">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
