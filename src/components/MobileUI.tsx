@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-auto p-4 min-h-0">
+      <div className="flex-1 overflow-y-auto p-4 min-h-0 max-h-0">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
