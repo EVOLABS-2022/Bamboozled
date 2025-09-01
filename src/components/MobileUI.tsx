@@ -58,7 +58,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
           </div>
           <div className="text-red-300 flex items-center gap-1">
             <img 
-              src="/images/bomber.jpeg" 
+              src="/images/CF156F0F-159A-4ED8-998B-3038B0DCE742_1_201_a.jpeg" 
               alt="Bombers"
               className="w-3 h-3 object-contain"
             />
@@ -612,7 +612,7 @@ function QuestsTab() {
     }
   }
 
-  const formatReward = (reward: any) => {
+  const formatReward = (reward: { bamboo?: number; seeds?: number; charms?: number }) => {
     const parts = []
     if (reward.bamboo) parts.push(`${reward.bamboo} 🎋`)
     if (reward.seeds) parts.push(`${reward.seeds} 🌱`)
