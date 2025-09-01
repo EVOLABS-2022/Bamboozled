@@ -31,7 +31,7 @@ interface GameGridProps {
 }
 
 export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) {
-  const { tiles: gameTiles, collectBamboo, updateBambooProduction, collectCraftedSeed, timeSpeed } = useGameStore()
+  const { tiles: gameTiles, collectBamboo, updateBambooProduction, timeSpeed } = useGameStore()
   const [forceUpdate, setForceUpdate] = useState(0)
 
   // Force re-render every 10 seconds to update bamboo images
@@ -107,7 +107,7 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
     }
   })
 
-  const handleTileClick = (tileId: string, event: React.MouseEvent) => {
+  const handleTileClick = (tileId: string) => {
     if (!isDragging && onTileSelect) {
       // First update bamboo production, then check for collection
       updateBambooProduction()
@@ -325,7 +325,7 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
                   width: TILE_SIZE,
                   height: TILE_SIZE
                 }}
-                onClick={(event) => handleTileClick(tile.id, event)}
+                onClick={() => handleTileClick(tile.id)}
               >
                 {getTileContent(tile)}
                 
