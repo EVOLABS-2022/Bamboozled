@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-scroll p-4 min-h-0">
+      <div className="flex-1 overflow-y-auto p-4 min-h-0">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
@@ -618,7 +618,7 @@ function QuestsTab() {
   }
 
   return (
-    <div className="space-y-4 h-full overflow-y-auto">
+    <div className="space-y-4">
       <h3 className="text-white font-bold text-lg">Quests & Games</h3>
       
       {/* Gambling Mini-Game */}
