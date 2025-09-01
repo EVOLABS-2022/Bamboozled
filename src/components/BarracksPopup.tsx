@@ -39,7 +39,7 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
     { id: 'warrior' as const, name: 'Warrior', icon: '⚔️', image: '/images/warrior.png', cost: 50, time: 2, description: 'Fast melee brawler' },
     { id: 'archer' as const, name: 'Archer', icon: '🏹', image: '/images/archer.jpeg', cost: 100, time: 3, description: 'Ranged attacker' },
     { id: 'monk' as const, name: 'Monk', icon: '🧘', image: '/images/monk.png', cost: 150, time: 4, description: 'Support healer' },
-    { id: 'bomber' as const, name: 'Bomber', icon: '💣', image: '/images/bomber.jpeg', cost: 200, time: 5, description: 'AoE specialist' }
+    { id: 'bomber' as const, name: 'Bomber', icon: '💣', image: '/images/CF156F0F-159A-4ED8-998B-3038B0DCE742_1_201_a.jpeg', cost: 200, time: 5, description: 'AoE specialist' }
   ]
 
   return (
