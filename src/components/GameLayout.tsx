@@ -29,7 +29,7 @@ export default function GameLayout() {
 
   return (
     <div className="bg-gradient-to-br from-green-800 via-green-900 to-green-950 flex flex-col overflow-hidden px-2 pb-2" style={{ height: '100dvh' }}>
-      <div className="h-full w-full border-2 border-green-600/30 border-t-0 rounded-b-lg overflow-hidden flex flex-col">
+      <div className="h-full w-full border-2 border-green-600/30 border-t-0 rounded-b-lg flex flex-col">
       {/* Force landscape orientation hint */}
       <div className="portrait:flex portrait:items-center portrait:justify-center portrait:bg-black/80 portrait:text-white portrait:text-center portrait:p-8 hidden">
         <div>
