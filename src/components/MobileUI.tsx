@@ -621,6 +621,14 @@ function QuestsTab() {
     <div className="space-y-4">
       <h3 className="text-white font-bold text-lg">Quests & Games</h3>
       
+      {/* DEBUG: Test scrolling with extra content */}
+      <div className="bg-red-900/20 p-2 rounded border border-red-500/30">
+        <div className="text-red-300 text-xs">DEBUG: Scroll Test</div>
+        {Array.from({ length: 20 }, (_, i) => (
+          <div key={i} className="text-gray-400 text-xs py-1">Test line {i + 1}</div>
+        ))}
+      </div>
+      
       {/* Gambling Mini-Game */}
       <div className="bg-orange-900/30 p-3 rounded-lg border border-orange-700/30">
         <h4 className="text-orange-300 font-medium mb-2">🎰 Lucky Bamboo (Hourly)</h4>
