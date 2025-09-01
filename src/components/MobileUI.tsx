@@ -22,7 +22,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
         <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
