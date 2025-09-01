@@ -22,7 +22,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full grid grid-rows-[auto_auto_auto_1fr]">
       {/* Header */}
       <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
         <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
@@ -121,7 +121,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-y-scroll p-4" style={{ height: '1px' }}>
+      <div className="overflow-y-auto p-4 min-h-0">
         {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
         {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
         {activeTab === 'convoy' && <ConvoyTab />}
