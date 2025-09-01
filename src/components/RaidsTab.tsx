@@ -41,7 +41,7 @@ export default function RaidsTab() {
     { id: 'warrior', name: 'Warrior', cost: 2, icon: '⚔️', image: '/images/warrior.png', description: '100 HP, 1 DPS, melee fighter' },
     { id: 'archer', name: 'Archer', cost: 3, icon: '🏹', image: '/images/archer.jpeg', description: '70 HP, 5 DPS, ranged' },
     { id: 'monk', name: 'Monk', cost: 3, icon: '🧘', image: '/images/monk.png', description: '80 HP, 10 DPS, support' },
-    { id: 'bomber', name: 'Bomber', cost: 4, icon: '💣', image: '/images/bomber.jpeg', description: '60 HP, 15 DPS, AoE' }
+    { id: 'bomber', name: 'Bomber', cost: 4, icon: '💣', image: '/images/CF156F0F-159A-4ED8-998B-3038B0DCE742_1_201_a.jpeg', description: '60 HP, 15 DPS, AoE' }
   ]
 
   const abilityTypes = [
