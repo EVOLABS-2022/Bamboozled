@@ -14,24 +14,24 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   const { player, getMaxBambooStorage, timeSpeed, setTimeSpeedEnabled, setTimeSpeedMultiplier } = useGameStore()
   const maxStorage = getMaxBambooStorage()
   const tabs = [
-    { id: 'land' as const, name: 'Land', icon: '🏞️' },
-    { id: 'buildings' as const, name: 'Build', icon: '🏗️' },
-    { id: 'convoy' as const, name: 'Trade', icon: '🚛' },
-    { id: 'quests' as const, name: 'Quests', icon: '📋' },
-    { id: 'raids' as const, name: 'Raids', icon: '🏴‍☠️' },
+    { id: 'land' as const, name: 'Land' },
+    { id: 'buildings' as const, name: 'Build' },
+    { id: 'convoy' as const, name: 'Trade' },
+    { id: 'quests' as const, name: 'Quests' },
+    { id: 'raids' as const, name: 'Raids' },
   ]
 
   return (
-    <div className="h-full flex flex-col min-h-0">
+    <div className="h-full overflow-y-auto">
       {/* Header */}
-      <div className="bg-green-800/50 p-4 border-b border-green-700/50">
-        <h1 className="text-white text-xl font-bold">Bamboo Lands</h1>
-        <div className="flex items-center gap-4 mt-2 text-sm">
+      <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
+        <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
+        <div className="flex items-center gap-3 mt-1 text-sm">
           <div className="text-green-300">🎋 {player.bamboo.toLocaleString()}</div>
           <div className="text-yellow-300">🌱 {player.seeds}</div>
           <div className="text-purple-300">🔮 {player.charms}</div>
         </div>
-        <div className="flex items-center gap-3 mt-1 text-xs">
+        <div className="flex items-center gap-2 mt-1 text-xs">
           <div className="text-orange-300 flex items-center gap-1">
             <img 
               src="/images/warrior.png" 
@@ -109,27 +109,24 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex-1 py-3 px-2 text-center transition-all ${
+            className={`flex-1 py-2 px-2 text-center transition-all ${
               activeTab === tab.id
                 ? 'bg-green-600 text-white border-b-2 border-green-400'
                 : 'text-green-200 hover:bg-green-700/50'
             }`}
           >
-            <div className="text-lg">{tab.icon}</div>
-            <div className="text-xs font-medium">{tab.name}</div>
+            <div className="text-sm font-medium">{tab.name}</div>
           </button>
         ))}
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 min-h-0 relative">
-        <div className="absolute inset-0 p-4 overflow-y-auto">
-          {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
-          {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
-          {activeTab === 'convoy' && <ConvoyTab />}
-          {activeTab === 'quests' && <QuestsTab />}
-          {activeTab === 'raids' && <RaidsTab />}
-        </div>
+      <div className="p-4">
+        {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
+        {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
+        {activeTab === 'convoy' && <ConvoyTab />}
+        {activeTab === 'quests' && <QuestsTab />}
+        {activeTab === 'raids' && <RaidsTab />}
       </div>
     </div>
   )
