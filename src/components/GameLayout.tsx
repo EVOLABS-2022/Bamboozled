@@ -28,7 +28,8 @@ export default function GameLayout() {
   }, [updateConvoys, updateBambooProduction, updateQuests, updateSeedCrafting, updateTroopTraining, generateRaidCamps])
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-green-800 via-green-900 to-green-950 flex flex-col overflow-hidden">
+    <div className="h-screen w-screen bg-gradient-to-br from-green-800 via-green-900 to-green-950 flex flex-col overflow-hidden p-2">
+      <div className="h-full w-full border-2 border-green-600/30 rounded-lg overflow-hidden flex flex-col">
       {/* Force landscape orientation hint */}
       <div className="portrait:flex portrait:items-center portrait:justify-center portrait:bg-black/80 portrait:text-white portrait:text-center portrait:p-8 hidden">
         <div>
@@ -49,6 +50,7 @@ export default function GameLayout() {
         <div className="w-1/4 h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50">
           <MobileUI activeTab={activeTab} onTabChange={setActiveTab} selectedTile={selectedTile} />
         </div>
+      </div>
       </div>
     </div>
   )
