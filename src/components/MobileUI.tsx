@@ -127,15 +127,6 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
         {activeTab === 'convoy' && <ConvoyTab />}
         {activeTab === 'quests' && <QuestsTab />}
         {activeTab === 'raids' && <RaidsTab />}
-        {/* Debug content to test scrolling */}
-        <div className="mt-8 space-y-4 text-gray-500 text-xs">
-          <div>Debug scroll test</div>
-          <div>More content</div>
-          <div>Even more content</div>
-          <div>Keep scrolling</div>
-          <div>This should be scrollable</div>
-          <div>Bottom of debug content</div>
-        </div>
       </div>
     </div>
   )
