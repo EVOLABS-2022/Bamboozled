@@ -23,7 +23,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className="h-full flex flex-col">
+    <div className={`h-full flex flex-col transition-all duration-300 ${popupTab ? 'w-72' : 'w-auto'}`}>
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
@@ -59,15 +59,19 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Horizontal Tab Navigation */}
-      <div className="flex bg-black/30 flex-shrink-0">
+      <div className={`flex bg-black/30 flex-shrink-0 ${!popupTab ? 'flex-col w-16' : ''}`}>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setPopupTab(tab.id)}
-            className="flex-1 py-2 px-2 text-center transition-all bg-green-800/50 hover:bg-green-700/50 text-green-200 border-r border-green-700/50 last:border-r-0"
+            className={`py-2 px-2 text-center transition-all bg-green-800/50 hover:bg-green-700/50 text-green-200 border-green-700/50 ${
+              !popupTab 
+                ? 'border-b last:border-b-0 w-full' 
+                : 'flex-1 border-r last:border-r-0'
+            }`}
           >
             <div className="text-lg mb-1">{tab.icon}</div>
-            <div className="text-xs font-medium">{tab.name}</div>
+            {popupTab && <div className="text-xs font-medium">{tab.name}</div>}
           </button>
         ))}
       </div>
