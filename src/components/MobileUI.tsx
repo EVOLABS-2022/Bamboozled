@@ -24,7 +24,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className={`h-full flex flex-col transition-all duration-300 ${popupTab || showDevControl ? 'w-72' : 'w-auto'}`}>
+    <div className={`h-full flex flex-col transition-all duration-300 z-40 relative ${popupTab || showDevControl ? 'w-72' : 'w-auto'}`}>
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
@@ -106,6 +106,17 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
           </button>
         ))}
       </div>
+      
+      {/* Sidebar Collapse Overlay */}
+      {(showDevControl || popupTab) && (
+        <div 
+          className="fixed inset-0 z-30"
+          onClick={() => {
+            setShowDevControl(false)
+            setPopupTab(null)
+          }}
+        />
+      )}
       
       {/* Tab Content Popup */}
       {popupTab && (
