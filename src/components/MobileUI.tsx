@@ -260,7 +260,7 @@ function LandTab({ selectedTile }: { selectedTile?: string | null }) {
 }
 
 function BuildingsTab({ selectedTile }: { selectedTile?: string | null }) {
-  const { buildOnTile, player, tiles, canPlaceBuilding, canUpgradeBuilding, upgradeBuilding, getBuildingUpgradeCost } = useGameStore()
+  const { buildOnTile, player, tiles, canPlaceBuilding } = useGameStore()
   
   const buildings = [
     { name: 'HQ', icon: '🏛️', bambooCost: 500, seedCost: 1, description: 'Command center' },
@@ -280,19 +280,7 @@ function BuildingsTab({ selectedTile }: { selectedTile?: string | null }) {
     }
   }
 
-  const handleUpgrade = () => {
-    if (selectedTile) {
-      const success = upgradeBuilding(selectedTile)
-      if (!success) {
-        alert('Cannot upgrade building. Check requirements: sufficient seeds and upgradeable building.')
-      }
-    }
-  }
-
-
   const selectedTileData = selectedTile ? tiles[selectedTile] : null
-  const upgradeCost = selectedTile ? getBuildingUpgradeCost(selectedTile) : null
-  const canUpgrade = selectedTile ? canUpgradeBuilding(selectedTile) : false
 
   return (
     <div className="space-y-4">
@@ -307,59 +295,15 @@ function BuildingsTab({ selectedTile }: { selectedTile?: string | null }) {
              selectedTileData?.type === 'building' ? `Has ${selectedTileData.building?.name} (Level ${selectedTileData.building?.level})` : 'Unknown'}
           </p>
           
-          {/* Building Upgrade Section */}
-          {selectedTileData?.type === 'building' && upgradeCost && (
-            <div className="mt-3 p-2 bg-purple-900/30 rounded border border-purple-700/30">
-              <h5 className="text-purple-300 text-sm font-medium mb-1">Upgrade Available</h5>
-              <p className="text-xs text-gray-300 mb-2">
-                {selectedTileData.building?.name} Level {selectedTileData.building?.level} → {(selectedTileData.building?.level || 1) + 1}
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-yellow-300">
-                  Cost: {[
-                    upgradeCost.seeds ? `${upgradeCost.seeds} 🌱` : null,
-                    upgradeCost.bamboo ? `${upgradeCost.bamboo} 🎋` : null
-                  ].filter(Boolean).join(' + ')}
-                </span>
-                <button
-                  onClick={handleUpgrade}
-                  disabled={!canUpgrade}
-                  className="bg-purple-600 hover:bg-purple-700 text-white py-1 px-3 rounded text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Upgrade
-                </button>
-              </div>
-            </div>
-          )}
-          
-          {selectedTileData?.type === 'building' && !upgradeCost && (selectedTileData.building?.name === 'HQ' || selectedTileData.building?.name === 'Depot') && (
-            <div className="mt-2 p-2 bg-green-900/30 rounded border border-green-700/30">
-              <p className="text-sm text-green-300">🏆 Max Level Reached!</p>
-            </div>
-          )}
-          
-          {/* Depot Storage Information */}
-          {selectedTileData?.type === 'building' && selectedTileData.building?.name === 'Depot' && (
+          {/* Building Action Info */}
+          {selectedTileData?.type === 'building' && (
             <div className="mt-3 p-2 bg-blue-900/30 rounded border border-blue-700/30">
-              <h5 className="text-blue-300 text-sm font-medium mb-1">📦 Storage Capacity</h5>
-              <p className="text-xs text-gray-300">
-                Level {selectedTileData.building.level} Depot provides:
-              </p>
-              <p className="text-sm text-blue-300 font-medium">
-                +{selectedTileData.building.level === 1 ? '500' : selectedTileData.building.level === 2 ? '1,500' : selectedTileData.building.level === 3 ? '3,000' : '5,000'} storage capacity
+              <p className="text-sm text-blue-300">
+                Click on the building to manage and upgrade
               </p>
             </div>
           )}
           
-          {/* Nursery Information - Seed crafting moved to popup */}
-          {selectedTileData?.type === 'building' && selectedTileData.building?.name === 'Nursery' && (
-            <div className="mt-3 p-2 bg-green-900/30 rounded border border-green-700/30">
-              <h5 className="text-green-300 text-sm font-medium mb-1">🌱 Nursery</h5>
-              <p className="text-xs text-gray-300">
-                Click on the Nursery tile to craft seeds from bamboo
-              </p>
-            </div>
-          )}
         </div>
       ) : (
         <div className="bg-gray-800/30 p-3 rounded-lg border border-gray-600/30">
