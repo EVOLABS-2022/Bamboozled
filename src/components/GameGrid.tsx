@@ -5,6 +5,8 @@ import { useGesture } from '@use-gesture/react'
 import { useGameStore } from '@/stores/gameStore'
 import NurseryPopup from './NurseryPopup'
 import BarracksPopup from './BarracksPopup'
+import HqPopup from './HqPopup'
+import DepotPopup from './DepotPopup'
 
 // Game world is 15x15 square grid (rotated 45 degrees)
 const GRID_SIZE = 15
@@ -65,6 +67,12 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
     tileId: string;
   } | null>(null)
   const [barracksPopup, setBarracksPopup] = useState<{
+    tileId: string;
+  } | null>(null)
+  const [hqPopup, setHqPopup] = useState<{
+    tileId: string;
+  } | null>(null)
+  const [depotPopup, setDepotPopup] = useState<{
     tileId: string;
   } | null>(null)
 
@@ -132,6 +140,18 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
       // Check for Barracks - show popup instead of just selecting
       if (tile && tile.type === 'building' && tile.building?.name === 'Barracks') {
         setBarracksPopup({ tileId })
+        return
+      }
+      
+      // Check for HQ - show popup instead of just selecting
+      if (tile && tile.type === 'building' && tile.building?.name === 'HQ') {
+        setHqPopup({ tileId })
+        return
+      }
+      
+      // Check for Depot - show popup instead of just selecting
+      if (tile && tile.type === 'building' && tile.building?.name === 'Depot') {
+        setDepotPopup({ tileId })
         return
       }
       
@@ -368,6 +388,22 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
         <BarracksPopup
           tileId={barracksPopup.tileId}
           onClose={() => setBarracksPopup(null)}
+        />
+      )}
+
+      {/* HQ Popup */}
+      {hqPopup && (
+        <HqPopup
+          tileId={hqPopup.tileId}
+          onClose={() => setHqPopup(null)}
+        />
+      )}
+
+      {/* Depot Popup */}
+      {depotPopup && (
+        <DepotPopup
+          tileId={depotPopup.tileId}
+          onClose={() => setDepotPopup(null)}
         />
       )}
     </div>
