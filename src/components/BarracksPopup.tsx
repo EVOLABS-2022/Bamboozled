@@ -9,7 +9,7 @@ interface BarracksPopupProps {
 }
 
 export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
-  const { tiles, player, canTrainTroop, startTroopTraining, collectTrainedTroops, getTroopTrainingCost } = useGameStore()
+  const { tiles, player, canTrainTroop, startTroopTraining, collectTrainedTroops, getTroopTrainingCost, getBuildingUpgradeCost, canUpgradeBuilding, upgradeBuilding } = useGameStore()
   const [selectedTroop, setSelectedTroop] = useState<'warrior' | 'archer' | 'monk' | 'bomber'>('warrior')
   const [quantity, setQuantity] = useState(1)
   
@@ -20,6 +20,8 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
 
   const training = tile.building.troopTraining
   const cost = getTroopTrainingCost(selectedTroop, quantity)
+  const currentLevel = tile.building.level
+  const upgradeCost = getBuildingUpgradeCost(tileId)
 
   const handleStartTraining = () => {
     const success = startTroopTraining(tileId, selectedTroop, quantity)
@@ -32,6 +34,13 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
     const success = collectTrainedTroops(tileId)
     if (!success) {
       alert('No troops ready to collect.')
+    }
+  }
+
+  const handleUpgrade = () => {
+    const success = upgradeBuilding(tileId)
+    if (!success) {
+      alert('Cannot upgrade. Check requirements.')
     }
   }
 
@@ -50,28 +59,26 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
         onClick={onClose}
       />
       
-      {/* Popup Box */}
-      <div className="fixed z-50 flex items-center justify-center pointer-events-none"
+      {/* Full Screen Popup */}
+      <div className="fixed inset-4 bg-amber-900/95 backdrop-blur-sm z-50 flex flex-col rounded-lg border border-amber-700/50"
            style={{
-             left: 0,
-             top: 0,
-             right: '320px', // Account for sidebar width (w-80 = 320px)
-             bottom: 0
+             right: '324px' // Account for sidebar width (w-80 = 320px) + margin
            }}>
-        <div className="bg-amber-800/95 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 shadow-xl flex flex-col pointer-events-auto min-w-96 max-w-[600px] max-h-[90vh] overflow-y-auto">
-          
-          {/* Header */}
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-amber-200 font-bold text-lg flex items-center gap-2">
-              🏰 Barracks (Level {tile.building.level})
-            </h3>
-            <button
-              onClick={onClose}
-              className="text-amber-300 hover:text-white text-xl leading-none"
-            >
-              ×
-            </button>
-          </div>
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-amber-700/50 flex-shrink-0">
+          <h2 className="text-white text-xl font-bold flex items-center gap-3">
+            🏰 Barracks Level {currentLevel}
+          </h2>
+          <button 
+            onClick={onClose}
+            className="text-white hover:text-red-300 text-2xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+        
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
 
           {/* Current Troops and Troop Selection Side by Side */}
           <div className="mb-4 grid grid-cols-2 gap-4">
@@ -218,6 +225,48 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
                   Need {cost.bamboo} bamboo to train troops
                 </p>
               )}
+            </div>
+          )}
+
+          {/* Upgrade Section */}
+          {upgradeCost ? (
+            <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-700/30">
+              <h3 className="text-purple-300 font-medium mb-2">Upgrade Available</h3>
+              <div className="mb-3">
+                <div className="text-white mb-2">
+                  Level {currentLevel} → Level {currentLevel + 1}
+                </div>
+                <div className="text-gray-300 text-sm mb-3">
+                  Unlock enhanced training capabilities and increased capacity.
+                </div>
+                <div className="flex gap-4 text-sm">
+                  {upgradeCost.seeds && (
+                    <span className="text-green-300">🌱 {upgradeCost.seeds} Seeds</span>
+                  )}
+                  {upgradeCost.bamboo && (
+                    <span className="text-yellow-300">🎋 {upgradeCost.bamboo} Bamboo</span>
+                  )}
+                </div>
+              </div>
+              
+              <button
+                onClick={handleUpgrade}
+                disabled={!canUpgradeBuilding(tileId)}
+                className="w-full bg-purple-600 hover:bg-purple-500 disabled:bg-gray-600 disabled:text-gray-400 text-white py-2 px-4 rounded-lg transition-colors font-medium"
+              >
+                Upgrade to Level {currentLevel + 1}
+              </button>
+              
+              {!canUpgradeBuilding(tileId) && (
+                <p className="text-red-300 text-xs text-center mt-2">
+                  Insufficient resources or HQ level too low
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="bg-gray-900/30 p-4 rounded-lg border border-gray-700/30">
+              <h3 className="text-gray-300 font-medium mb-2">Maximum Level</h3>
+              <p className="text-gray-400 text-sm">This barracks is fully upgraded!</p>
             </div>
           )}
         </div>
