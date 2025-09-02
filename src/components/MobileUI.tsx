@@ -108,12 +108,11 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
       
       {/* Sidebar Collapse Overlay */}
-      {(showDevControl || popupTab) && (
+      {(showDevControl && !popupTab) && (
         <div 
           className="fixed inset-0 z-30"
           onClick={() => {
             setShowDevControl(false)
-            setPopupTab(null)
           }}
         />
       )}
