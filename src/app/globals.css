@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes nursery-pulse {
+  0%, 100% {
+    filter: brightness(0.15);
+  }
+  50% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes nursery-glow {
+  0%, 100% {
+    filter: brightness(1);
+  }
+}
+
+.nursery-crafting {
+  animation: nursery-pulse 2s ease-in-out infinite;
+}
+
+.nursery-ready {
+  animation: nursery-glow 1s ease-in-out;
+  filter: brightness(1);
+}
