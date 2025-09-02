@@ -13,6 +13,7 @@ interface MobileUIProps {
 export default function MobileUI({ activeTab, onTabChange, selectedTile }: MobileUIProps) {
   const { player, getMaxBambooStorage, timeSpeed, setTimeSpeedEnabled, setTimeSpeedMultiplier } = useGameStore()
   const [popupTab, setPopupTab] = useState<'land' | 'buildings' | 'convoy' | 'quests' | 'raids' | null>(null)
+  const [showDevControl, setShowDevControl] = useState(false)
   const maxStorage = getMaxBambooStorage()
   const tabs = [
     { id: 'land' as const, name: 'Land', icon: '🌿' },
@@ -23,15 +24,15 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className={`h-full flex flex-col transition-all duration-300 ${popupTab ? 'w-72' : 'w-auto'}`}>
+    <div className={`h-full flex flex-col transition-all duration-300 ${popupTab || showDevControl ? 'w-72' : 'w-auto'}`}>
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
-        {!popupTab ? (
+        {!popupTab && !showDevControl ? (
           <div className="flex items-center justify-center p-2">
             <button
-              onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
-              className={`text-lg ${
+              onClick={() => setShowDevControl(true)}
+              className={`text-lg hover:bg-red-800/30 rounded p-1 transition-colors ${
                 timeSpeed.enabled 
                   ? 'text-red-300' 
                   : 'text-gray-400'
@@ -44,16 +45,26 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
           <>
             <div className="flex items-center justify-between p-2">
               <span className="text-red-300 text-xs font-medium">⚡ Dev Speed Control</span>
-              <button
-                onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
-                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                  timeSpeed.enabled 
-                    ? 'bg-red-600 text-white' 
-                    : 'bg-gray-600 text-gray-300'
-                }`}
-              >
-                {timeSpeed.enabled ? 'ON' : 'OFF'}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                    timeSpeed.enabled 
+                      ? 'bg-red-600 text-white' 
+                      : 'bg-gray-600 text-gray-300'
+                  }`}
+                >
+                  {timeSpeed.enabled ? 'ON' : 'OFF'}
+                </button>
+                {!popupTab && (
+                  <button
+                    onClick={() => setShowDevControl(false)}
+                    className="text-gray-400 hover:text-white text-sm"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             </div>
             {timeSpeed.enabled && (
               <div className="flex items-center gap-2 px-2 pb-2">
@@ -76,19 +87,22 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
       </div>
 
       {/* Horizontal Tab Navigation */}
-      <div className={`flex bg-black/30 flex-shrink-0 ${!popupTab ? 'flex-col w-16' : ''}`}>
+      <div className={`flex bg-black/30 flex-shrink-0 ${!popupTab && !showDevControl ? 'flex-col w-16' : ''}`}>
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => setPopupTab(tab.id)}
+            onClick={() => {
+              setPopupTab(tab.id)
+              setShowDevControl(false)
+            }}
             className={`py-2 px-2 text-center transition-all bg-green-800/50 hover:bg-green-700/50 text-green-200 border-green-700/50 ${
-              !popupTab 
+              !popupTab && !showDevControl
                 ? 'border-b last:border-b-0 w-full' 
                 : 'flex-1 border-r last:border-r-0'
             }`}
           >
             <div className="text-lg mb-1">{tab.icon}</div>
-            {popupTab && <div className="text-xs font-medium">{tab.name}</div>}
+            {(popupTab || showDevControl) && <div className="text-xs font-medium">{tab.name}</div>}
           </button>
         ))}
       </div>
