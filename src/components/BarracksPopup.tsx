@@ -58,7 +58,7 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
              right: '320px', // Account for sidebar width (w-80 = 320px)
              bottom: 0
            }}>
-        <div className="bg-amber-800/95 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 shadow-xl flex flex-col pointer-events-auto min-w-80 max-w-96">
+        <div className="bg-amber-800/95 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 shadow-xl flex flex-col pointer-events-auto min-w-80 max-w-96 max-h-[90vh] overflow-y-auto">
           
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
