@@ -42,21 +42,20 @@ export default function GameLayout() {
 
       {/* Game content - hidden in portrait */}
       <div className="flex-1 flex flex-row landscape:flex portrait:hidden">
-        {/* Outside click overlay for dev control */}
-        {showDevControl && (
-          <div 
-            className="fixed inset-0 bg-transparent z-20"
-            onClick={() => setShowDevControl(false)}
-          />
-        )}
-        
         {/* Main Game Area - takes up most of the screen */}
         <div className="flex-1 relative">
+          {/* Outside click overlay for dev control - only covers game area */}
+          {showDevControl && (
+            <div 
+              className="absolute inset-0 bg-transparent z-10"
+              onClick={() => setShowDevControl(false)}
+            />
+          )}
           <GameGrid selectedTile={selectedTile} onTileSelect={setSelectedTile} />
         </div>
 
         {/* Mobile UI Panel - right side */}
-        <div className="w-auto h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col relative z-30">
+        <div className="w-auto h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col relative">
           <MobileUI 
             activeTab={activeTab} 
             onTabChange={setActiveTab} 
