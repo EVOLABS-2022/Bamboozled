@@ -768,7 +768,7 @@ export const useGameStore = create<GameState & GameActions>()(
       }
 
       // Find HQ level
-      const hqTile = Object.values(state.tiles).find(tile => tile.building?.type === 'hq')
+      const hqTile = Object.values(state.tiles).find(tile => tile.building?.name === 'HQ')
       const hqLevel = hqTile?.building?.level || 1
 
       // Get current building level and target level
