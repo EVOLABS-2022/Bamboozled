@@ -24,11 +24,6 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
 
   return (
     <div className="h-full flex flex-col">
-      {/* Compact Header */}
-      <div className="bg-green-800/50 p-2 border-b border-green-700/50 flex-shrink-0">
-        <div className="text-green-300 text-sm font-medium">🎋 {player.bamboo.toLocaleString()}/{maxStorage.toLocaleString()}</div>
-        <div className="text-yellow-300 text-sm">🌱 {player.seeds}</div>
-      </div>
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
