@@ -292,7 +292,15 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
   }
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-green-800 to-green-900">
+    <div 
+      className="relative w-full h-full overflow-hidden"
+      style={{
+        backgroundImage: 'url(/images/background.png)',
+        backgroundSize: 'auto',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#166534'
+      }}>
       {/* Grid Container */}
       <div
         {...bind()}
