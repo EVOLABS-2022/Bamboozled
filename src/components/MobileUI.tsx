@@ -63,17 +63,16 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
         )}
       </div>
 
-      {/* Vertical Tab Navigation */}
-      <div className="flex-1 flex flex-col justify-center gap-1 p-1">
+      {/* Horizontal Tab Navigation */}
+      <div className="flex bg-black/30 flex-shrink-0">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setPopupTab(tab.id)}
-            className="bg-green-800/50 hover:bg-green-700/70 p-2 rounded border border-green-600/30 transition-all"
-            title={tab.name}
+            className="flex-1 py-2 px-2 text-center transition-all bg-green-800/50 hover:bg-green-700/50 text-green-200 border-r border-green-700/50 last:border-r-0"
           >
-            <div className="text-lg">{tab.icon}</div>
-            <div className="text-xs text-green-200">{tab.name}</div>
+            <div className="text-lg mb-1">{tab.icon}</div>
+            <div className="text-xs font-medium">{tab.name}</div>
           </button>
         ))}
       </div>
@@ -88,7 +87,7 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
           />
           
           {/* Popup Content */}
-          <div className="fixed inset-4 bg-green-900/95 backdrop-blur-sm border-2 border-green-600/50 rounded-lg z-50 flex flex-col">
+          <div className="fixed inset-0 bg-green-900/95 backdrop-blur-sm z-50 flex flex-col">
             {/* Popup Header */}
             <div className="flex items-center justify-between p-4 border-b border-green-700/50 flex-shrink-0">
               <h2 className="text-white text-lg font-bold flex items-center gap-2">
