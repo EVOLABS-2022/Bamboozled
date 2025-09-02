@@ -58,7 +58,7 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
              right: '320px', // Account for sidebar width (w-80 = 320px)
              bottom: 0
            }}>
-        <div className="bg-amber-800/95 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 shadow-xl flex flex-col pointer-events-auto min-w-80 max-w-96 max-h-[90vh] overflow-y-auto">
+        <div className="bg-amber-800/95 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 shadow-xl flex flex-col pointer-events-auto min-w-96 max-w-[600px] max-h-[90vh] overflow-y-auto">
           
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
@@ -73,20 +73,53 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
             </button>
           </div>
 
-          {/* Current Troops */}
-          <div className="mb-4 p-3 bg-amber-900/50 rounded-lg border border-amber-700/50">
-            <h4 className="text-amber-200 font-medium mb-2">Your Army</h4>
-            <div className="grid grid-cols-4 gap-2 text-xs">
-              {troopTypes.map(troop => (
-                <div key={troop.id} className="text-center">
-                  <img 
-                    src={troop.image} 
-                    alt={troop.name}
-                    className="w-8 h-8 object-contain mx-auto"
-                  />
-                  <div className="text-amber-100">{player.troops[troop.id]}</div>
-                </div>
-              ))}
+          {/* Current Troops and Troop Selection Side by Side */}
+          <div className="mb-4 grid grid-cols-2 gap-4">
+            {/* Current Troops */}
+            <div className="p-3 bg-amber-900/50 rounded-lg border border-amber-700/50">
+              <h4 className="text-amber-200 font-medium mb-2">Your Army</h4>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {troopTypes.map(troop => (
+                  <div key={troop.id} className="text-center">
+                    <img 
+                      src={troop.image} 
+                      alt={troop.name}
+                      className="w-8 h-8 object-contain mx-auto"
+                    />
+                    <div className="text-amber-100">{player.troops[troop.id]}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Troop Selection */}
+            <div className="p-3 bg-amber-900/50 rounded-lg border border-amber-700/50">
+              <h4 className="text-amber-200 font-medium mb-2">Select Troop Type</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {troopTypes.map(troop => (
+                  <button
+                    key={troop.id}
+                    onClick={() => setSelectedTroop(troop.id)}
+                    className={`p-2 rounded text-sm transition-colors text-left ${
+                      selectedTroop === troop.id
+                        ? 'bg-amber-600 text-white'
+                        : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src={troop.image} 
+                        alt={troop.name}
+                        className="w-6 h-6 object-contain"
+                      />
+                      <div>
+                        <div className="font-medium text-xs">{troop.name}</div>
+                        <div className="text-xs opacity-75">{troop.cost} 🎋 • {troop.time}m</div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -140,35 +173,6 @@ export default function BarracksPopup({ tileId, onClose }: BarracksPopupProps) {
             )
           ) : (
             <div className="space-y-4">
-              {/* Troop Selection */}
-              <div className="space-y-2">
-                <h4 className="text-amber-200 font-medium">Select Troop Type</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {troopTypes.map(troop => (
-                    <button
-                      key={troop.id}
-                      onClick={() => setSelectedTroop(troop.id)}
-                      className={`p-2 rounded text-sm transition-colors text-left ${
-                        selectedTroop === troop.id
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <img 
-                          src={troop.image} 
-                          alt={troop.name}
-                          className="w-6 h-6 object-contain"
-                        />
-                        <div>
-                          <div className="font-medium">{troop.name}</div>
-                          <div className="text-xs opacity-75">{troop.cost} 🎋 • {troop.time}m</div>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {/* Quantity Selection */}
               <div className="space-y-2">
