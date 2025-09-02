@@ -203,9 +203,19 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
           const gameTile = gameTiles[tile.id]
           const seedCrafting = gameTile?.building?.seedCrafting
           
+          // Determine animation state
+          let animationClass = ''
+          if (seedCrafting) {
+            if (seedCrafting.completed) {
+              animationClass = 'nursery-ready' // Glow at 100% when ready
+            } else {
+              animationClass = 'nursery-crafting' // Pulse between 15% and 100% while crafting
+            }
+          }
+          
           return (
             <div className="flex flex-col items-center text-center">
-              <div className="text-lg">🌱</div>
+              <div className={`text-lg ${animationClass}`}>🌱</div>
               {seedCrafting && (
                 <div className="text-xs">
                   {seedCrafting.completed ? (
