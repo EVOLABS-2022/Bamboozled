@@ -12,62 +12,22 @@ interface MobileUIProps {
 
 export default function MobileUI({ activeTab, onTabChange, selectedTile }: MobileUIProps) {
   const { player, getMaxBambooStorage, timeSpeed, setTimeSpeedEnabled, setTimeSpeedMultiplier } = useGameStore()
+  const [popupTab, setPopupTab] = useState<'land' | 'buildings' | 'convoy' | 'quests' | 'raids' | null>(null)
   const maxStorage = getMaxBambooStorage()
   const tabs = [
-    { id: 'land' as const, name: 'Land' },
-    { id: 'buildings' as const, name: 'Build' },
-    { id: 'convoy' as const, name: 'Trade' },
-    { id: 'quests' as const, name: 'Quests' },
-    { id: 'raids' as const, name: 'Raids' },
+    { id: 'land' as const, name: 'Land', icon: '🌿' },
+    { id: 'buildings' as const, name: 'Build', icon: '🏗️' },
+    { id: 'convoy' as const, name: 'Trade', icon: '🚛' },
+    { id: 'quests' as const, name: 'Quests', icon: '⚔️' },
+    { id: 'raids' as const, name: 'Raids', icon: '🏴‍☠️' },
   ]
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header */}
-      <div className="bg-green-800/50 p-3 border-b border-green-700/50 flex-shrink-0">
-        <h1 className="text-white text-lg font-bold">Bamboo Lands</h1>
-        <div className="flex items-center gap-3 mt-1 text-sm">
-          <div className="text-green-300">🎋 {player.bamboo.toLocaleString()}</div>
-          <div className="text-yellow-300">🌱 {player.seeds}</div>
-          <div className="text-purple-300">🔮 {player.charms}</div>
-        </div>
-        <div className="flex items-center gap-2 mt-1 text-xs">
-          <div className="text-orange-300 flex items-center gap-1">
-            <img 
-              src="/images/warrior.png" 
-              alt="Warriors"
-              className="w-4 h-4 object-contain"
-            />
-            {player.troops.warrior}
-          </div>
-          <div className="text-blue-300 flex items-center gap-1">
-            <img 
-              src="/images/archer.jpeg" 
-              alt="Archers"
-              className="w-4 h-4 object-contain"
-            />
-            {player.troops.archer}
-          </div>
-          <div className="text-cyan-300 flex items-center gap-1">
-            <img 
-              src="/images/monk.png" 
-              alt="Monks"
-              className="w-4 h-4 object-contain"
-            />
-            {player.troops.monk}
-          </div>
-          <div className="text-red-300 flex items-center gap-1">
-            <img 
-              src="/images/CF156F0F-159A-4ED8-998B-3038B0DCE742_1_201_a.jpeg" 
-              alt="Bombers"
-              className="w-4 h-4 object-contain"
-            />
-            {player.troops.bomber}
-          </div>
-        </div>
-        <div className="mt-1 text-xs text-gray-300">
-          Storage: {player.bamboo.toLocaleString()} / {maxStorage.toLocaleString()}
-        </div>
+      {/* Compact Header */}
+      <div className="bg-green-800/50 p-2 border-b border-green-700/50 flex-shrink-0">
+        <div className="text-green-300 text-sm font-medium">🎋 {player.bamboo.toLocaleString()}/{maxStorage.toLocaleString()}</div>
+        <div className="text-yellow-300 text-sm">🌱 {player.seeds}</div>
       </div>
 
       {/* Speed Control Panel (Development/Testing) */}
@@ -103,31 +63,57 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
         )}
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex bg-black/30 flex-shrink-0">
+      {/* Vertical Tab Navigation */}
+      <div className="flex-1 flex flex-col justify-center gap-1 p-1">
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`flex-1 py-2 px-2 text-center transition-all ${
-              activeTab === tab.id
-                ? 'bg-green-600 text-white border-b-2 border-green-400'
-                : 'text-green-200 hover:bg-green-700/50'
-            }`}
+            onClick={() => setPopupTab(tab.id)}
+            className="bg-green-800/50 hover:bg-green-700/70 p-2 rounded border border-green-600/30 transition-all"
+            title={tab.name}
           >
-            <div className="text-sm font-medium">{tab.name}</div>
+            <div className="text-lg">{tab.icon}</div>
+            <div className="text-xs text-green-200">{tab.name}</div>
           </button>
         ))}
       </div>
-
-      {/* Tab Content */}
-      <div className="flex-1 overflow-y-scroll p-4">
-        {activeTab === 'land' && <LandTab selectedTile={selectedTile} />}
-        {activeTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
-        {activeTab === 'convoy' && <ConvoyTab />}
-        {activeTab === 'quests' && <QuestsTab />}
-        {activeTab === 'raids' && <RaidsTab />}
-      </div>
+      
+      {/* Tab Content Popup */}
+      {popupTab && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black/50 z-40"
+            onClick={() => setPopupTab(null)}
+          />
+          
+          {/* Popup Content */}
+          <div className="fixed inset-4 bg-green-900/95 backdrop-blur-sm border-2 border-green-600/50 rounded-lg z-50 flex flex-col">
+            {/* Popup Header */}
+            <div className="flex items-center justify-between p-4 border-b border-green-700/50 flex-shrink-0">
+              <h2 className="text-white text-lg font-bold flex items-center gap-2">
+                {tabs.find(t => t.id === popupTab)?.icon}
+                {tabs.find(t => t.id === popupTab)?.name}
+              </h2>
+              <button 
+                onClick={() => setPopupTab(null)}
+                className="text-white hover:text-red-300 text-xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+            
+            {/* Popup Content - Scrollable */}
+            <div className="flex-1 overflow-y-auto p-4">
+              {popupTab === 'land' && <LandTab selectedTile={selectedTile} />}
+              {popupTab === 'buildings' && <BuildingsTab selectedTile={selectedTile} />}
+              {popupTab === 'convoy' && <ConvoyTab />}
+              {popupTab === 'quests' && <QuestsTab />}
+              {popupTab === 'raids' && <RaidsTab />}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
