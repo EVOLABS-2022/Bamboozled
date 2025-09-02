@@ -202,6 +202,12 @@ interface GameActions {
   collectTrainedTroops: (tileId: string) => boolean
   updateTroopTraining: () => void
   getTroopTrainingCost: (troopType: 'warrior' | 'archer' | 'monk' | 'bomber', quantity: number) => { bamboo: number; time: number }
+  
+  // Save/Load system
+  saveGame: () => Promise<void>
+  loadGame: (userId: string) => Promise<void>
+  startAutoSave: (userId: string) => void
+  stopAutoSave: () => void
 }
 
 export const useGameStore = create<GameState & GameActions>()(
@@ -761,13 +767,25 @@ export const useGameStore = create<GameState & GameActions>()(
         return false
       }
 
+      // Find HQ level
+      const hqTile = Object.values(state.tiles).find(tile => tile.building?.type === 'hq')
+      const hqLevel = hqTile?.building?.level || 1
+
+      // Get current building level and target level
+      const tile = state.tiles[tileId]
+      const currentLevel = tile?.building?.level || 1
+      const targetLevel = currentLevel + 1
+
+      // Check HQ level restriction
+      const hqAllowsUpgrade = targetLevel <= hqLevel
+
       // Check if player has enough seeds (if required)
       const hasSeeds = !upgradeCost.seeds || state.player.seeds >= upgradeCost.seeds
       
       // Check if player has enough bamboo (if required)
       const hasBamboo = !upgradeCost.bamboo || state.player.bamboo >= upgradeCost.bamboo
       
-      return hasSeeds && hasBamboo
+      return hasSeeds && hasBamboo && hqAllowsUpgrade
     },
 
     upgradeBuilding: (tileId) => {
@@ -1309,7 +1327,115 @@ export const useGameStore = create<GameState & GameActions>()(
           }
         }
       })
-    })
+    }),
+
+    // Save/Load system
+    saveGame: (() => {
+      let autoSaveInterval: NodeJS.Timeout | null = null
+      let currentUserId: string | null = null
+
+      const saveGame = async () => {
+        if (!currentUserId) return
+        
+        try {
+          const { supabase } = await import('@/lib/supabase')
+          const gameState = get()
+          
+          // Remove functions from state before saving
+          const stateToSave = {
+            player: gameState.player,
+            tiles: gameState.tiles,
+            convoys: gameState.convoys,
+            quests: gameState.quests,
+            timeSpeed: gameState.timeSpeed,
+            raidCamps: gameState.raidCamps,
+            activeRaid: gameState.activeRaid
+          }
+
+          const { error } = await supabase
+            .from('game_saves')
+            .upsert({
+              player_id: currentUserId,
+              game_state: stateToSave,
+              last_updated: new Date().toISOString(),
+              version: 1
+            })
+
+          if (error) {
+            console.error('Save failed:', error)
+          } else {
+            console.log('Game saved successfully')
+          }
+        } catch (error) {
+          console.error('Save error:', error)
+        }
+      }
+
+      // Expose additional methods on saveGame function
+      ;(saveGame as any).setUserId = (userId: string) => { currentUserId = userId }
+      ;(saveGame as any).startAutoSave = () => {
+        if (autoSaveInterval) clearInterval(autoSaveInterval)
+        autoSaveInterval = setInterval(saveGame, 30000)
+      }
+      ;(saveGame as any).stopAutoSave = () => {
+        if (autoSaveInterval) {
+          clearInterval(autoSaveInterval)
+          autoSaveInterval = null
+        }
+      }
+
+      return saveGame
+    })(),
+
+    loadGame: async (userId: string) => {
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        
+        const { data, error } = await supabase
+          .from('game_saves')
+          .select('*')
+          .eq('player_id', userId)
+          .order('last_updated', { ascending: false })
+          .limit(1)
+          .single()
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Load failed:', error)
+          return
+        }
+
+        if (data && data.game_state) {
+          set((state) => {
+            // Restore saved state
+            Object.assign(state, data.game_state)
+          })
+          console.log('Game loaded successfully')
+        } else {
+          console.log('No saved game found, using default state')
+        }
+      } catch (error) {
+        console.error('Load error:', error)
+      }
+    },
+
+    startAutoSave: (userId: string) => {
+      const store = get()
+      ;(store.saveGame as any).setUserId(userId)
+      
+      // Load game first
+      store.loadGame(userId)
+      
+      // Start auto-save
+      ;(store.saveGame as any).startAutoSave()
+      
+      console.log('Auto-save started for user:', userId)
+    },
+
+    stopAutoSave: () => {
+      const store = get()
+      ;(store.saveGame as any).stopAutoSave()
+      console.log('Auto-save stopped')
+    }
   }))
 )
 
