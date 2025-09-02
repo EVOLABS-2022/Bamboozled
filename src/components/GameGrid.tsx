@@ -33,7 +33,7 @@ interface GameGridProps {
 }
 
 export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) {
-  const { tiles: gameTiles, collectBamboo, updateBambooProduction, timeSpeed, player, getMaxBambooStorage } = useGameStore()
+  const { tiles: gameTiles, collectBamboo, updateBambooProduction, timeSpeed, player, getMaxBambooStorage, collectCraftedSeed } = useGameStore()
   const [forceUpdate, setForceUpdate] = useState(0)
 
   // Force re-render every 10 seconds to update bamboo images
@@ -131,8 +131,16 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
         }
       }
       
-      // Check for Nursery - show popup instead of just selecting
+      // Check for Nursery - collect seed if ready, otherwise show popup
       if (tile && tile.type === 'building' && tile.building?.name === 'Nursery') {
+        // Check if there's a completed seed to collect
+        if (tile.building?.seedCrafting?.completed) {
+          const collected = collectCraftedSeed(tileId)
+          if (collected) {
+            return // Seed collected, don't show popup
+          }
+        }
+        // No completed seed, show popup
         setNurseryPopup({ tileId })
         return
       }
