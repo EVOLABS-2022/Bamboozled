@@ -194,7 +194,7 @@ export default function RaidsTab() {
       {/* Attempts Counter */}
       <div className="bg-yellow-900/30 p-3 rounded-lg border border-yellow-700/30">
         <div className="flex items-center justify-between">
-          <span className="text-yellow-300 font-medium">Daily Attempts</span>
+          <span className="text-yellow-300 font-medium">Daily Attempts Remaining</span>
           <span className="text-white font-bold">{attempts.current}/{attempts.max}</span>
         </div>
         <div className="text-xs text-gray-300 mt-1">
