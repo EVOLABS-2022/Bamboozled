@@ -31,7 +31,7 @@ interface GameGridProps {
 }
 
 export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) {
-  const { tiles: gameTiles, collectBamboo, updateBambooProduction, timeSpeed } = useGameStore()
+  const { tiles: gameTiles, collectBamboo, updateBambooProduction, timeSpeed, player, getMaxBambooStorage } = useGameStore()
   const [forceUpdate, setForceUpdate] = useState(0)
 
   // Force re-render every 10 seconds to update bamboo images
@@ -341,17 +341,10 @@ export default function GameGrid({ selectedTile, onTileSelect }: GameGridProps) 
         </div>
       </div>
 
-      {/* Mobile Controls Overlay */}
-      <div className="absolute top-4 left-4 flex flex-col gap-2">
-        <button
-          className="bg-black/50 text-white p-2 rounded-lg text-sm backdrop-blur-sm"
-          onClick={() => setTransform({ x: 0, y: 0, scale: 1 })}
-        >
-          Reset View
-        </button>
-        <div className="bg-black/50 text-white px-2 py-1 rounded text-xs backdrop-blur-sm">
-          Zoom: {transform.scale.toFixed(1)}x
-        </div>
+      {/* Resource Display */}
+      <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-2 rounded-lg backdrop-blur-sm">
+        <div className="text-green-300 text-sm font-medium">🎋 {player.bamboo.toLocaleString()}/{getMaxBambooStorage().toLocaleString()}</div>
+        <div className="text-yellow-300 text-sm">🌱 {player.seeds}</div>
       </div>
 
       {/* Selected tile info */}
