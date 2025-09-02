@@ -81,8 +81,6 @@ interface GameState {
     lastGamble: number
     raids: {
       attemptsUsed: number
-      maxAttempts: number
-      bonusAttempts: number
       stars: number
       lastRefresh: number
     }
@@ -226,8 +224,6 @@ export const useGameStore = create<GameState & GameActions>()(
       lastGamble: 0,
       raids: {
         attemptsUsed: 0,
-        maxAttempts: 3,
-        bonusAttempts: 0,
         stars: 0,
         lastRefresh: Date.now()
       },
