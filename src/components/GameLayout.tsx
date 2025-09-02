@@ -47,7 +47,7 @@ export default function GameLayout() {
         </div>
 
         {/* Mobile UI Panel - right side */}
-        <div className="w-80 h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col">
+        <div className="w-20 h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col">
           <MobileUI activeTab={activeTab} onTabChange={setActiveTab} selectedTile={selectedTile} />
         </div>
       </div>
