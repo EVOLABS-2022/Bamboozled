@@ -931,8 +931,8 @@ export const useGameStore = create<GameState & GameActions>()(
       const now = Date.now()
       const oneDayMs = 24 * 60 * 60 * 1000
       
-      // Check if we need to refresh camps (once per day)
-      if (now - state.raids.lastDailyRefresh > oneDayMs) {
+      // Check if we need to refresh camps (once per day OR if no camps exist)
+      if (now - state.raids.lastDailyRefresh > oneDayMs || state.raids.availableCamps.length === 0) {
         state.raids.lastDailyRefresh = now
         state.player.raids.attemptsUsed = 0 // Reset daily attempts
         
