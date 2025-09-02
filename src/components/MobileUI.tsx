@@ -27,34 +27,51 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
-        <div className="flex items-center justify-between p-2">
-          <span className="text-red-300 text-xs font-medium">⚡ Dev Speed Control</span>
-          <button
-            onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
-            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-              timeSpeed.enabled 
-                ? 'bg-red-600 text-white' 
-                : 'bg-gray-600 text-gray-300'
-            }`}
-          >
-            {timeSpeed.enabled ? 'ON' : 'OFF'}
-          </button>
-        </div>
-        {timeSpeed.enabled && (
-          <div className="flex items-center gap-2 px-2 pb-2">
-            <span className="text-xs text-red-300">1x</span>
-            <input
-              type="range"
-              min="1"
-              max="50"
-              step="1"
-              value={timeSpeed.multiplier}
-              onChange={(e) => setTimeSpeedMultiplier(Number(e.target.value))}
-              className="flex-1 h-1 bg-red-800 rounded-lg appearance-none cursor-pointer"
-            />
-            <span className="text-xs text-red-300">50x</span>
-            <span className="text-xs text-white font-medium">{timeSpeed.multiplier}x</span>
+        {!popupTab ? (
+          <div className="flex items-center justify-center p-2">
+            <button
+              onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
+              className={`text-lg ${
+                timeSpeed.enabled 
+                  ? 'text-red-300' 
+                  : 'text-gray-400'
+              }`}
+            >
+              ⚡
+            </button>
           </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between p-2">
+              <span className="text-red-300 text-xs font-medium">⚡ Dev Speed Control</span>
+              <button
+                onClick={() => setTimeSpeedEnabled(!timeSpeed.enabled)}
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                  timeSpeed.enabled 
+                    ? 'bg-red-600 text-white' 
+                    : 'bg-gray-600 text-gray-300'
+                }`}
+              >
+                {timeSpeed.enabled ? 'ON' : 'OFF'}
+              </button>
+            </div>
+            {timeSpeed.enabled && (
+              <div className="flex items-center gap-2 px-2 pb-2">
+                <span className="text-xs text-red-300">1x</span>
+                <input
+                  type="range"
+                  min="1"
+                  max="50"
+                  step="1"
+                  value={timeSpeed.multiplier}
+                  onChange={(e) => setTimeSpeedMultiplier(Number(e.target.value))}
+                  className="flex-1 h-1 bg-red-800 rounded-lg appearance-none cursor-pointer"
+                />
+                <span className="text-xs text-red-300">50x</span>
+                <span className="text-xs text-white font-medium">{timeSpeed.multiplier}x</span>
+              </div>
+            )}
+          </>
         )}
       </div>
 
