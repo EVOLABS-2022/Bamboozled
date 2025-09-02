@@ -976,6 +976,14 @@ export const useGameStore = create<GameState & GameActions>()(
       const bonusFromStars = Math.floor(state.player.raids.stars / 6) * 1
       const maxAttempts = 3 + Math.min(2, bonusFromStars)
       
+      console.log('Raid attempts debug:', {
+        attemptsUsed: state.player.raids.attemptsUsed,
+        stars: state.player.raids.stars,
+        bonusFromStars,
+        maxAttempts,
+        current: maxAttempts - state.player.raids.attemptsUsed
+      })
+      
       return {
         current: maxAttempts - state.player.raids.attemptsUsed,
         max: maxAttempts
