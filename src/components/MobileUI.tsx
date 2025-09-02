@@ -8,9 +8,10 @@ interface MobileUIProps {
   activeTab: 'land' | 'buildings' | 'convoy' | 'quests' | 'raids'
   onTabChange: (tab: 'land' | 'buildings' | 'convoy' | 'quests' | 'raids') => void
   selectedTile?: string | null
+  onDevControlToggle?: (show: boolean) => void
 }
 
-export default function MobileUI({ activeTab, onTabChange, selectedTile }: MobileUIProps) {
+export default function MobileUI({ activeTab, onTabChange, selectedTile, onDevControlToggle }: MobileUIProps) {
   const { player, getMaxBambooStorage, timeSpeed, setTimeSpeedEnabled, setTimeSpeedMultiplier } = useGameStore()
   const [popupTab, setPopupTab] = useState<'land' | 'buildings' | 'convoy' | 'quests' | 'raids' | null>(null)
   const [showDevControl, setShowDevControl] = useState(false)
@@ -24,14 +25,20 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
   ]
 
   return (
-    <div className={`h-full flex flex-col transition-all duration-300 z-40 relative ${popupTab || showDevControl ? 'w-72' : 'w-auto'}`}>
+    <div 
+      className={`h-full flex flex-col transition-all duration-300 relative ${popupTab || showDevControl ? 'w-72' : 'w-auto'}`}
+      onClick={(e) => e.stopPropagation()}
+    >
 
       {/* Speed Control Panel (Development/Testing) */}
       <div className="bg-red-900/30 border-b border-red-700/50 flex-shrink-0">
         {!popupTab && !showDevControl ? (
           <div className="flex items-center justify-center p-2">
             <button
-              onClick={() => setShowDevControl(true)}
+              onClick={() => {
+                setShowDevControl(true)
+                onDevControlToggle?.(true)
+              }}
               className={`text-lg hover:bg-red-800/30 rounded p-1 transition-colors ${
                 timeSpeed.enabled 
                   ? 'text-red-300' 
@@ -58,7 +65,10 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
                 </button>
                 {!popupTab && (
                   <button
-                    onClick={() => setShowDevControl(false)}
+                    onClick={() => {
+                      setShowDevControl(false)
+                      onDevControlToggle?.(false)
+                    }}
                     className="text-gray-400 hover:text-white text-sm"
                   >
                     ×
@@ -107,15 +117,6 @@ export default function MobileUI({ activeTab, onTabChange, selectedTile }: Mobil
         ))}
       </div>
       
-      {/* Sidebar Collapse Overlay */}
-      {(showDevControl && !popupTab) && (
-        <div 
-          className="fixed inset-0 z-30"
-          onClick={() => {
-            setShowDevControl(false)
-          }}
-        />
-      )}
       
       {/* Tab Content Popup */}
       {popupTab && (
