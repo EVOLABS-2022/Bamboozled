@@ -44,14 +44,14 @@ export default function GameLayout() {
       <div className="flex-1 flex flex-row landscape:flex portrait:hidden">
         {/* Main Game Area - takes up most of the screen */}
         <div className="flex-1 relative">
+          <GameGrid selectedTile={selectedTile} onTileSelect={setSelectedTile} />
           {/* Outside click overlay for dev control - only covers game area */}
           {showDevControl && (
             <div 
-              className="absolute inset-0 bg-transparent z-10"
+              className="absolute inset-0 bg-transparent z-20"
               onClick={() => setShowDevControl(false)}
             />
           )}
-          <GameGrid selectedTile={selectedTile} onTileSelect={setSelectedTile} />
         </div>
 
         {/* Mobile UI Panel - right side */}
