@@ -8,6 +8,7 @@ import { useGameStore } from '@/stores/gameStore'
 export default function GameLayout() {
   const [activeTab, setActiveTab] = useState<'land' | 'buildings' | 'convoy' | 'quests' | 'raids'>('land')
   const [selectedTile, setSelectedTile] = useState<string | null>(null)
+  const [showDevControl, setShowDevControl] = useState(false)
   const { updateConvoys, updateBambooProduction, updateQuests, updateSeedCrafting, updateTroopTraining, generateRaidCamps } = useGameStore()
 
   // Auto-update convoys, bamboo production, quests, seed crafting, and raids every 5 seconds
@@ -41,14 +42,27 @@ export default function GameLayout() {
 
       {/* Game content - hidden in portrait */}
       <div className="flex-1 flex flex-row landscape:flex portrait:hidden">
+        {/* Outside click overlay for dev control */}
+        {showDevControl && (
+          <div 
+            className="fixed inset-0 bg-transparent z-20"
+            onClick={() => setShowDevControl(false)}
+          />
+        )}
+        
         {/* Main Game Area - takes up most of the screen */}
         <div className="flex-1 relative">
           <GameGrid selectedTile={selectedTile} onTileSelect={setSelectedTile} />
         </div>
 
         {/* Mobile UI Panel - right side */}
-        <div className="w-auto h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col">
-          <MobileUI activeTab={activeTab} onTabChange={setActiveTab} selectedTile={selectedTile} />
+        <div className="w-auto h-full bg-black/20 backdrop-blur-sm border-l border-green-700/50 flex flex-col relative z-30">
+          <MobileUI 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab} 
+            selectedTile={selectedTile}
+            onDevControlToggle={setShowDevControl}
+          />
         </div>
       </div>
       </div>
